@@ -6,9 +6,10 @@ import { themeConfig } from "./theme";
 
 export const Layout = ({ children }: { children: React.ReactNode }) => (
   <ThemeProvider theme={themeConfig}>
-    <Container>
+    {/* <Container>
       <Header />
       {children}
-    </Container>
+    </Container> */}
+    <div className="container py-4">{children}</div>
   </ThemeProvider>
 );
