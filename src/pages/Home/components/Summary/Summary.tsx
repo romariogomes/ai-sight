@@ -57,14 +57,13 @@ export const Summary = ({
                 </span>
               </div>
               <div className="mx-2">
-                <div className="is-size-7">{`Rain: ${data.wind.speed}%`}</div>
                 <div className="is-size-7">{`Humidity: ${data.temperature.humidity}%`}</div>
                 <div className="is-size-7">{`Wind: ${data.wind.speed} m/s`}</div>
               </div>
             </div>
           </div>
         </div>
-        <div className="column is-6">
+        <div className="column is-6 is-flex is-justify-content-end is-align-items-center">
           <div className="is-flex is-flex-direction-column is-justify-content-center is-align-items-end">
             <div className="is-size-5 has-text-weight-semibold">
               {data.city}

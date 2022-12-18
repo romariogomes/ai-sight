@@ -9,16 +9,6 @@ export const useWeatherData = () => {
   const { initialPosition } = useGeolocation();
   const [currentPosition, setCurrentPosition] = useState<Position>();
   const [units, setUnits] = useState<Units>("metric");
-  // const [forecast, setForecast] = useState<any | null>(null);
-  // const [nearbyCities, setNearbyCities] = useState<any[] | null>(null);
-
-  // const parseNearbyCitiesData = (data: any) => ({
-  //   cityName: data?.name,
-  //   coords: {
-  //     lat: data?.coord?.lat,
-  //     lng: data?.coord?.lon,
-  //   },
-  // });
 
   const parseSummaryData = (data: WeatherData): ISummaryData => {
     return {
@@ -41,8 +31,6 @@ export const useWeatherData = () => {
     };
   };
 
-  // const handleNearbyCityClick = (city: any) => setCurrentPosition(city?.coords);
-
   useEffect(() => {
     setCurrentPosition(initialPosition);
   }, [initialPosition]);
@@ -64,13 +52,10 @@ export const useWeatherData = () => {
   );
 
   return {
-    // forecast,
-    // nearbyCities,
     summaryData: weatherData.data,
     currentPosition,
     units,
     fetchWeatherData,
-    // handleNearbyCityClick,
     handleUnitChange: (unit: Units) => setUnits(unit),
   };
 };

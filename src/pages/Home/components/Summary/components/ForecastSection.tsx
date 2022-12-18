@@ -3,6 +3,7 @@ import { LineChart } from "components";
 import { useForecastData } from "pages/Home/hooks";
 import { Position, Units } from "pages/Home/types";
 import { useEffect, useMemo, useState } from "react";
+import { WeekForecast } from "./WeekForecast";
 
 interface Data {
   name: string;
@@ -30,7 +31,6 @@ export const ForecastSection = ({
     setSelectedTab(newValue);
   };
 
-  console.log(weekForecast);
   const kpis: Data[] = useMemo(
     () => [
       {
@@ -59,7 +59,7 @@ export const ForecastSection = ({
 
   return (
     <div className="columns my-2">
-      <div className="column is-12" style={{ height: 300 }}>
+      <div className="column is-12">
         <div>
           <Tabs
             value={selectedTab}
@@ -86,8 +86,11 @@ export const ForecastSection = ({
           </Tabs>
         </div>
         {chartData && (
-          <LineChart data={chartData.data} color={chartData.color} />
+          <div style={{ height: 300 }}>
+            <LineChart data={chartData.data} color={chartData.color} />
+          </div>
         )}
+        <WeekForecast data={weekForecast} />
       </div>
     </div>
   );

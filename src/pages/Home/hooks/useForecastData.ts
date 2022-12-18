@@ -18,11 +18,13 @@ export const useForecastData = ({ currentPosition, units }: Props) => {
   const parseForecastData = (data: ForecastData) => {
     const now = dayjs();
     let date = now.format("YYYY/MM/DD");
-    let temp: { min: number; max: number }[] = [];
+    let min: number | undefined;
+    let max: number | undefined;
     let forecastByHour: IDayForecast[] = [];
     let forecastByDate: {
       day: string;
-      temperatures: { min: number; max: number }[];
+      temperature: { min: number; max: number };
+      icon: string;
     }[] = [];
 
     data.list.forEach((item) => {
@@ -37,28 +39,28 @@ export const useForecastData = ({ currentPosition, units }: Props) => {
         });
       }
 
-      if (date !== forecastTime.format("YYYY/MM/DD")) {
-        forecastByDate.push({ day: date, temperatures: temp });
+      if (
+        date !== forecastTime.format("YYYY/MM/DD") &&
+        min !== undefined &&
+        max !== undefined
+      ) {
+        forecastByDate.push({
+          day: date,
+          temperature: { min, max },
+          icon: `${process.env.REACT_APP_OPEN_WEATHER_IMAGE_STORAGE_URL}/${item.weather[0]?.icon}.png`,
+        });
         date = forecastTime.format("YYYY/MM/DD");
-        temp = [];
+        [min, max] = [undefined, undefined];
       }
 
-      temp.push({ min: item.main.temp_min, max: item.main.temp_max });
+      if (min === undefined || (min && item.main.temp_min < min))
+        min = item.main.temp_min;
+      if (max === undefined || (max && item.main.temp_max > max))
+        max = item.main.temp_max;
     });
 
     setDayForecast(forecastByHour);
-    setWeekForecast(
-      forecastByDate.map((item) => ({
-        day: item.day,
-        temperature: item.temperatures.reduce(
-          (acc, cur, _, arr) => ({
-            min: acc.min + cur.min / arr.length,
-            max: acc.max + cur.max / arr.length,
-          }),
-          { min: 0, max: 0 }
-        ),
-      }))
-    );
+    setWeekForecast(forecastByDate);
   };
 
   const forecastQuery = useQuery(
