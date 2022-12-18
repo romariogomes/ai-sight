@@ -1,6 +1,7 @@
 import dayjs from "dayjs";
 import { Card, LineChart } from "components";
 import { ISummaryData, Units } from "pages/Home/types";
+import { ChartSection } from "./components";
 
 interface ISummaryProps {
   data?: ISummaryData;
@@ -67,17 +68,7 @@ export const Summary = ({ data, units, handleUnitChange }: ISummaryProps) => {
           </div>
         </div>
       </div>
-      <div className="columns">
-        <div className="column is-12" style={{ height: 300 }}>
-          <LineChart
-            data={{
-              x: ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"],
-              y: [120, 132, 101, 134, 90, 230, 210],
-            }}
-            color={"#0F0"}
-          />
-        </div>
-      </div>
+      <ChartSection />
     </Card>
   );
 };
