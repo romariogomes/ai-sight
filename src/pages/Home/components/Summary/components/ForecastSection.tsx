@@ -19,7 +19,7 @@ export const ForecastSection = ({
   currentPosition,
   units,
 }: IForecastSectionProps) => {
-  const { dayForecast, forecastData } = useForecastData({
+  const { dayForecast, weekForecast } = useForecastData({
     currentPosition,
     units,
   });
@@ -30,6 +30,7 @@ export const ForecastSection = ({
     setSelectedTab(newValue);
   };
 
+  console.log(weekForecast);
   const kpis: Data[] = useMemo(
     () => [
       {

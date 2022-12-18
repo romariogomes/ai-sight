@@ -48,3 +48,9 @@ export interface IDayForecast {
   rain: number;
   wind: { speed: number; direction: number };
 }
+
+export interface IWeekForecast {
+  day: string;
+  temperature: { min: number; max: number };
+  icon?: string;
+}

@@ -1,15 +1,10 @@
+import { AxiosError } from "axios";
 import dayjs from "dayjs";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { useQuery } from "react-query";
 import { fetchForecastData } from "services";
-import { ForecastData, ForecastItem, WeatherData } from "types";
-import {
-  IDayForecast,
-  IParsedForecast,
-  ISummaryData,
-  Position,
-  Units,
-} from "../types";
+import { ForecastData } from "types";
+import { IDayForecast, IWeekForecast, Position, Units } from "../types";
 
 interface Props {
   currentPosition: Position;
@@ -17,54 +12,54 @@ interface Props {
 }
 
 export const useForecastData = ({ currentPosition, units }: Props) => {
-  console.log(currentPosition);
-  const [forecast, setForecast] = useState<any | null>(null);
   const [dayForecast, setDayForecast] = useState<IDayForecast[]>([]);
+  const [weekForecast, setWeekForecast] = useState<IWeekForecast[]>([]);
 
-  // const parseForecastData = (data: ForecastItem): IParsedForecast => {
-  //   return {
-  //     date: dayjs.unix(data.dt).format("ddd"),
-  //     temperature: {
-  //       min: Math.round(data.main.temp_min),
-  //       max: Math.round(data.main.temp_max),
-  //     },
-  //     rain: data.rain["3h"],
-  //     weather: {
-  //       icon: `${process.env.REACT_APP_OPEN_WEATHER_IMAGE_STORAGE_URL}/${data.weather[0]?.icon}@1x.png`,
-  //     },
-  //     wind: {
-  //       speed: data.wind.speed,
-  //       degree: data.wind.deg,
-  //     },
-  //   };
-  // };
-
-  const parseForcastData = (data: ForecastData) => {
+  const parseForecastData = (data: ForecastData) => {
     const now = dayjs();
-    let dayForecast: IDayForecast[] = [];
+    let date = now.format("YYYY/MM/DD");
+    let temp: { min: number; max: number }[] = [];
+    let forecastByHour: IDayForecast[] = [];
+    let forecastByDate: {
+      day: string;
+      temperatures: { min: number; max: number }[];
+    }[] = [];
 
     data.list.forEach((item) => {
       const forecastTime = dayjs.unix(item.dt);
 
       if (forecastTime.diff(now, "hours") <= 24) {
-        dayForecast.push({
+        forecastByHour.push({
           time: forecastTime.format("HH:mm"),
           temperature: Math.round(item.main.temp),
           rain: Math.round(item.pop * 100),
-          wind: {
-            speed: item.wind.speed,
-            direction: item.wind.deg,
-          },
+          wind: { speed: item.wind.speed, direction: item.wind.deg },
         });
       }
+
+      if (date !== forecastTime.format("YYYY/MM/DD")) {
+        forecastByDate.push({ day: date, temperatures: temp });
+        date = forecastTime.format("YYYY/MM/DD");
+        temp = [];
+      }
+
+      temp.push({ min: item.main.temp_min, max: item.main.temp_max });
     });
 
-    setDayForecast(dayForecast);
+    setDayForecast(forecastByHour);
+    setWeekForecast(
+      forecastByDate.map((item) => ({
+        day: item.day,
+        temperature: item.temperatures.reduce(
+          (acc, cur, _, arr) => ({
+            min: acc.min + cur.min / arr.length,
+            max: acc.max + cur.max / arr.length,
+          }),
+          { min: 0, max: 0 }
+        ),
+      }))
+    );
   };
-
-  // const getTodayForecast = (data: ForecastItem): IDayForecast => {
-  //   return [{ type: "Temperature", time: dayjs(data.dt) }];
-  // };
 
   const forecastQuery = useQuery(
     ["forecastData", currentPosition, units],
@@ -78,13 +73,14 @@ export const useForecastData = ({ currentPosition, units }: Props) => {
       enabled:
         currentPosition?.lat !== undefined &&
         currentPosition?.lng !== undefined,
-      // select: (response) => response.list.map(parseForecastData),
-      onSuccess: (response) => parseForcastData(response),
+      onSuccess: (response) => parseForecastData(response),
     }
   );
 
   return {
     dayForecast,
-    forecastData: forecastQuery.data,
+    weekForecast,
+    isLoading: forecastQuery.isFetching,
+    error: forecastQuery.error as AxiosError,
   };
 };
