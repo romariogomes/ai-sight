@@ -25,3 +25,26 @@ export interface ISummaryData {
     temp: number;
   };
 }
+
+export interface IParsedForecast {
+  date: string;
+  temperature: {
+    min: number;
+    max: number;
+  };
+  weather: {
+    icon: string;
+  };
+  rain: number;
+  wind: {
+    speed: number;
+    degree: number;
+  };
+}
+
+export interface IDayForecast {
+  time: string;
+  temperature: number;
+  rain: number;
+  wind: { speed: number; direction: number };
+}

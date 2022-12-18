@@ -1,15 +1,21 @@
 import dayjs from "dayjs";
-import { Card, LineChart } from "components";
-import { ISummaryData, Units } from "pages/Home/types";
-import { ChartSection } from "./components";
+import { Card } from "components";
+import { ISummaryData, Position, Units } from "pages/Home/types";
+import { ForecastSection } from "./components";
 
 interface ISummaryProps {
   data?: ISummaryData;
+  currentPosition?: Position;
   units?: Units;
   handleUnitChange: (unit: Units) => void;
 }
 
-export const Summary = ({ data, units, handleUnitChange }: ISummaryProps) => {
+export const Summary = ({
+  data,
+  currentPosition,
+  units,
+  handleUnitChange,
+}: ISummaryProps) => {
   if (!data) return null;
 
   return (
@@ -68,7 +74,7 @@ export const Summary = ({ data, units, handleUnitChange }: ISummaryProps) => {
           </div>
         </div>
       </div>
-      <ChartSection />
+      <ForecastSection currentPosition={currentPosition} units={units} />
     </Card>
   );
 };

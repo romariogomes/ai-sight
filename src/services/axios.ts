@@ -1,5 +1,5 @@
 import axios from "axios";
-import { WeatherData } from "types";
+import { ForecastData, WeatherData } from "types";
 
 const axiosInstance = axios.create({
   baseURL: process.env.REACT_APP_OPEN_WEATHER_API_URL,
@@ -20,6 +20,18 @@ export const fetchWeatherData = async ({
   units = "metric",
 }: IWeatherDataParams): Promise<WeatherData> => {
   const { data } = await axiosInstance.get<WeatherData>("weather", {
+    params: { lat, lon, units },
+  });
+
+  return data;
+};
+
+export const fetchForecastData = async ({
+  lat,
+  lon,
+  units = "metric",
+}: IWeatherDataParams): Promise<ForecastData> => {
+  const { data } = await axiosInstance.get<ForecastData>("forecast", {
     params: { lat, lon, units },
   });
 

@@ -67,6 +67,7 @@ export const useWeatherData = () => {
     // forecast,
     // nearbyCities,
     summaryData: weatherData.data,
+    currentPosition,
     units,
     fetchWeatherData,
     // handleNearbyCityClick,

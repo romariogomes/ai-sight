@@ -3,7 +3,8 @@ import { Summary } from "./components";
 import { useWeatherData } from "./hooks";
 
 export const Home = () => {
-  const { summaryData, units, handleUnitChange } = useWeatherData();
+  const { summaryData, currentPosition, units, handleUnitChange } =
+    useWeatherData();
 
   return (
     <Layout>
@@ -11,8 +12,9 @@ export const Home = () => {
         <div className="column is-8">
           <Summary
             data={summaryData}
-            handleUnitChange={handleUnitChange}
+            currentPosition={currentPosition}
             units={units}
+            handleUnitChange={handleUnitChange}
           />
         </div>
         <div className="column is-4">nearby cities</div>

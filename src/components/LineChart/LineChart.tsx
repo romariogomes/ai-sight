@@ -1,7 +1,7 @@
 import ReactECharts from "echarts-for-react";
 import * as echarts from "echarts/core";
 
-interface ILineChartProps {
+export interface ILineChartProps {
   color: string;
   data: {
     x: string[];
@@ -32,15 +32,7 @@ export const LineChart = ({ data, color }: ILineChartProps) => {
         name: "Email",
         type: "line",
         symbolSize: 0,
-        label: {
-          show: true,
-          //   formatter(d: echarts.DefaultLabelFormatterCallbackParams) {
-          //     const [_x, y] = d.value as [number, number];
-          //     if (d.dataIndex === 0) return `${y.toFixed(2)} RPM`;
-
-          //     return '';
-          //   },
-        },
+        label: { show: true },
         lineStyle: { color },
         areaStyle: { color: `${color}3` },
         itemStyle: { color },
