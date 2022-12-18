@@ -5,6 +5,8 @@ export interface ICoordinates {
 
 export type Position = ICoordinates | undefined;
 
+export type Units = "metric" | "imperial";
+
 export interface ISummaryData {
   city: string;
   temperature: {
@@ -12,6 +14,7 @@ export interface ISummaryData {
     min: number;
     max: number;
     feel: number;
+    humidity: number;
   };
   weather: {
     description: string;
