@@ -1,5 +1,5 @@
 import dayjs from "dayjs";
-import { Card } from "components";
+import { Card, LineChart } from "components";
 import { ISummaryData, Units } from "pages/Home/types";
 
 interface ISummaryProps {
@@ -65,6 +65,17 @@ export const Summary = ({ data, units, handleUnitChange }: ISummaryProps) => {
             <div className="is-size-6">{dayjs().format("dddd, HH:mm")}</div>
             <div className="is-size-6">{data.weather.description}</div>
           </div>
+        </div>
+      </div>
+      <div className="columns">
+        <div className="column is-12" style={{ height: 300 }}>
+          <LineChart
+            data={{
+              x: ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"],
+              y: [120, 132, 101, 134, 90, 230, 210],
+            }}
+            color={"#0F0"}
+          />
         </div>
       </div>
     </Card>
