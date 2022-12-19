@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import { useQuery } from "react-query";
 import { fetchForecastData } from "services";
 import { ForecastData } from "types";
+import { convertToLocalTimezone } from "utils/utils";
 import { IDayForecast, IWeekForecast, Position, Units } from "../types";
 
 interface Props {
@@ -16,7 +17,7 @@ export const useForecastData = ({ currentPosition, units }: Props) => {
   const [weekForecast, setWeekForecast] = useState<IWeekForecast[]>([]);
 
   const parseForecastData = (data: ForecastData) => {
-    const now = dayjs();
+    const now = convertToLocalTimezone(dayjs(), data.city.timezone);
     let date = now.format("YYYY/MM/DD");
     let min: number | undefined;
     let max: number | undefined;
@@ -24,7 +25,10 @@ export const useForecastData = ({ currentPosition, units }: Props) => {
     let forecastByDate: IWeekForecast[] = [];
 
     data.list.forEach((item) => {
-      const forecastTime = dayjs.unix(item.dt);
+      const forecastTime = convertToLocalTimezone(
+        dayjs.unix(item.dt),
+        data.city.timezone
+      );
 
       if (forecastTime.diff(now, "hours") <= 24) {
         forecastByHour.push({

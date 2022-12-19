@@ -2,6 +2,7 @@ import dayjs from "dayjs";
 import { Card, Spinner } from "components";
 import { ISummaryData, Position, Units } from "pages/Home/types";
 import { ForecastSection } from "./components";
+import { convertToLocalTimezone } from "utils/utils";
 
 interface ISummaryProps {
   data?: ISummaryData;
@@ -83,7 +84,11 @@ export const Summary = ({
             <div className="is-size-5 has-text-weight-semibold">
               {data.city}
             </div>
-            <div className="is-size-6">{dayjs().format("dddd, HH:mm")}</div>
+            <div className="is-size-6">
+              {convertToLocalTimezone(dayjs(), data.timezone).format(
+                "dddd, HH:mm"
+              )}
+            </div>
             <div className="is-size-6">{data.weather.description}</div>
           </div>
         </div>

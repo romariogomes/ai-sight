@@ -1,18 +1,15 @@
 import { AxiosError } from "axios";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { useQuery } from "react-query";
 import { fetchWeatherData } from "services";
 import { WeatherData } from "types";
 import { ISummaryData, Position, Units } from "../types";
-import { useGeolocation } from "./useGeolocation";
 
 interface Props {
   position: Position;
 }
 
 export const useWeatherData = ({ position }: Props) => {
-  // const { position } = useGeolocation();
-  // const [currentPosition, setCurrentPosition] = useState<Position>();
   const [units, setUnits] = useState<Units>("metric");
 
   const parseSummaryData = (data?: WeatherData): ISummaryData | undefined => {
@@ -20,6 +17,7 @@ export const useWeatherData = ({ position }: Props) => {
 
     return {
       city: data.name,
+      timezone: data.timezone,
       temperature: {
         current: Math.round(data.main.temp),
         min: Math.round(data.main.temp_min),
@@ -32,8 +30,8 @@ export const useWeatherData = ({ position }: Props) => {
         icon: `${process.env.REACT_APP_OPEN_WEATHER_IMAGE_STORAGE_URL}/${data.weather[0]?.icon}@2x.png`,
       },
       wind: {
-        speed: data?.wind?.speed,
-        temp: data?.wind?.deg,
+        speed: data.wind.speed,
+        temp: data.wind.deg,
       },
     };
   };
@@ -44,15 +42,10 @@ export const useWeatherData = ({ position }: Props) => {
     { enabled: position?.lat !== undefined && position?.lng !== undefined }
   );
 
-  // useEffect(() => {
-  //   setCurrentPosition(position);
-  // }, [position]);
-
   return {
     weatherData: parseSummaryData(weatherQuery.data),
     isLoading: weatherQuery.isFetching,
     error: weatherQuery.error as AxiosError,
-    // currentPosition,
     units,
     fetchWeatherData,
     handleUnitChange: (unit: Units) => setUnits(unit),

@@ -24,6 +24,7 @@ export interface ISummaryData {
     speed: number;
     temp: number;
   };
+  timezone: number;
 }
 
 export interface IParsedForecast {
