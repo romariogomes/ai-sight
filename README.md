@@ -1,25 +1,24 @@
 # Weather Check
 
-Realtime application to check forecast weather using geolocation.
+Realtime application to check weather and forecast.
 
 ## URL
 
-https://shape-weather-check.herokuapp.com/
+https://weather-sight.herokuapp.com/
 
 ## Technologies
 
 - React
 - Styled components
 - Typescript
-- [Google Map React](https://github.com/google-map-react/google-map-react)
-- [React Icons](https://react-icons.github.io/react-icons/)
-- [Heroku](https://www.heroku.com)
+- Material UI
+- React Query
 
 ## Local configuration
 
 ### Prerequisites
 
-- [node](https://nodejs.org/en/) >= 14
+- [node](https://nodejs.org/en/) >= 16
 - npm >= 6
 
 ### Steps
