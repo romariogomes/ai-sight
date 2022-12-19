@@ -1,3 +1,4 @@
+import { AxiosError } from "axios";
 import { useEffect, useState } from "react";
 import { useQuery } from "react-query";
 import { fetchWeatherData } from "services";
@@ -35,7 +36,7 @@ export const useWeatherData = () => {
     setCurrentPosition(initialPosition);
   }, [initialPosition]);
 
-  const weatherData = useQuery(
+  const weatherQuery = useQuery(
     ["weatherData", currentPosition, units],
     () =>
       fetchWeatherData({
@@ -52,7 +53,9 @@ export const useWeatherData = () => {
   );
 
   return {
-    summaryData: weatherData.data,
+    weatherData: weatherQuery.data,
+    isLoading: weatherQuery.isFetching,
+    error: weatherQuery.error as AxiosError,
     currentPosition,
     units,
     fetchWeatherData,

@@ -11,6 +11,7 @@ export const WeekForecast = ({ data }: IWeekForecastProps) => {
     <div className="columns is-flex is-justify-content-center my-2">
       {data.map((item) => (
         <div
+          key={`forecast ${item.day}`}
           className="column is-1 m-4 has-text-centered"
           style={{ border: "1px solid #4A4A4A", borderRadius: "5px" }}
         >
