@@ -6,7 +6,6 @@ interface IWeekForecastProps {
 }
 
 export const WeekForecast = ({ data }: IWeekForecastProps) => {
-  console.log(data);
   return (
     <div className="columns is-flex is-justify-content-center my-2">
       {data.map((item) => (

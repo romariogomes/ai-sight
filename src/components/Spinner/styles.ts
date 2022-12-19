@@ -13,14 +13,10 @@ export const SpinnerAnimation = styled.div`
       transform: rotate(360deg);
     }
   }
-  border: 5px solid rgba(0, 0, 0, 0.1);
+  border: 3px solid rgba(0, 0, 0, 0.1);
   border-left-color: #0080cd;
   border-radius: 50%;
   width: 3vh;
   height: 3vh;
-  animation: spin 1s linear infinite;
-`;
-
-export const LoadingMessage = styled.div`
-  margin-top: 10px;
+  animation: spin 0.5s linear infinite;
 `;

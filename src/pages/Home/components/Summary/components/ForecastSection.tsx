@@ -53,6 +53,8 @@ export const ForecastSection = ({
     [dayForecast]
   );
 
+  console.log(dayForecast);
+
   useEffect(() => {
     setChartData(kpis.find((i) => i.name === selectedTab));
   }, [selectedTab, kpis]);

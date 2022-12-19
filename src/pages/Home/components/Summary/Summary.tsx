@@ -1,5 +1,5 @@
 import dayjs from "dayjs";
-import { Card } from "components";
+import { Card, Spinner } from "components";
 import { ISummaryData, Position, Units } from "pages/Home/types";
 import { ForecastSection } from "./components";
 
@@ -7,15 +7,29 @@ interface ISummaryProps {
   data?: ISummaryData;
   currentPosition?: Position;
   units?: Units;
+  isLoading: boolean;
   handleUnitChange: (unit: Units) => void;
 }
 
 export const Summary = ({
   data,
+  isLoading,
   currentPosition,
   units,
   handleUnitChange,
 }: ISummaryProps) => {
+  if (isLoading)
+    return (
+      <Card>
+        <div
+          className="is-flex is-justify-content-center is-align-items-center"
+          style={{ height: 150 }}
+        >
+          <Spinner />
+        </div>
+      </Card>
+    );
+
   if (!data) return null;
 
   return (
@@ -27,6 +41,7 @@ export const Summary = ({
               <img
                 src={data.weather.icon}
                 alt={`${data.weather.description} icon`}
+                style={{ width: 100, height: 100 }}
               />
               <div className="is-size-1 has-text-weight-semibold">
                 {data.temperature.current}

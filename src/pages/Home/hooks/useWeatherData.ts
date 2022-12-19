@@ -11,7 +11,9 @@ export const useWeatherData = () => {
   const [currentPosition, setCurrentPosition] = useState<Position>();
   const [units, setUnits] = useState<Units>("metric");
 
-  const parseSummaryData = (data: WeatherData): ISummaryData => {
+  const parseSummaryData = (data?: WeatherData): ISummaryData | undefined => {
+    if (!data) return undefined;
+
     return {
       city: data.name,
       temperature: {
@@ -32,10 +34,6 @@ export const useWeatherData = () => {
     };
   };
 
-  useEffect(() => {
-    setCurrentPosition(initialPosition);
-  }, [initialPosition]);
-
   const weatherQuery = useQuery(
     ["weatherData", currentPosition, units],
     () =>
@@ -48,12 +46,15 @@ export const useWeatherData = () => {
       enabled:
         currentPosition?.lat !== undefined &&
         currentPosition?.lng !== undefined,
-      select: parseSummaryData,
     }
   );
 
+  useEffect(() => {
+    setCurrentPosition(initialPosition);
+  }, [initialPosition]);
+
   return {
-    weatherData: weatherQuery.data,
+    weatherData: parseSummaryData(weatherQuery.data),
     isLoading: weatherQuery.isFetching,
     error: weatherQuery.error as AxiosError,
     currentPosition,

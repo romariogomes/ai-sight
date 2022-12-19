@@ -1,6 +1,6 @@
 import { AxiosError } from "axios";
 import dayjs from "dayjs";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useQuery } from "react-query";
 import { fetchForecastData } from "services";
 import { ForecastData } from "types";
@@ -21,11 +21,7 @@ export const useForecastData = ({ currentPosition, units }: Props) => {
     let min: number | undefined;
     let max: number | undefined;
     let forecastByHour: IDayForecast[] = [];
-    let forecastByDate: {
-      day: string;
-      temperature: { min: number; max: number };
-      icon: string;
-    }[] = [];
+    let forecastByDate: IWeekForecast[] = [];
 
     data.list.forEach((item) => {
       const forecastTime = dayjs.unix(item.dt);
@@ -75,9 +71,12 @@ export const useForecastData = ({ currentPosition, units }: Props) => {
       enabled:
         currentPosition?.lat !== undefined &&
         currentPosition?.lng !== undefined,
-      onSuccess: (response) => parseForecastData(response),
     }
   );
+
+  useEffect(() => {
+    forecastQuery.data && parseForecastData(forecastQuery.data);
+  }, [forecastQuery.data]);
 
   return {
     dayForecast,

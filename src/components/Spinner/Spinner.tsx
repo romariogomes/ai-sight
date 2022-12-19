@@ -1,8 +1,7 @@
-import { Container, LoadingMessage, SpinnerAnimation } from "./styles";
+import { Container, SpinnerAnimation } from "./styles";
 
-export const Spinner = ({ text = "Loading" }) => (
+export const Spinner = () => (
   <Container>
     <SpinnerAnimation />
-    <LoadingMessage>{text}</LoadingMessage>
   </Container>
 );

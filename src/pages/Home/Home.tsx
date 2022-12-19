@@ -3,7 +3,7 @@ import { Summary } from "./components";
 import { useWeatherData } from "./hooks";
 
 export const Home = () => {
-  const { weatherData, currentPosition, units, handleUnitChange } =
+  const { weatherData, currentPosition, units, isLoading, handleUnitChange } =
     useWeatherData();
 
   return (
@@ -12,6 +12,7 @@ export const Home = () => {
         <div className="column is-8">
           <Summary
             data={weatherData}
+            isLoading={isLoading}
             currentPosition={currentPosition}
             units={units}
             handleUnitChange={handleUnitChange}
