@@ -1,5 +1,5 @@
 import { Layout } from "pages";
-import { Summary } from "./components";
+import { CitiesList, Summary } from "./components";
 import { useWeatherData } from "./hooks";
 
 export const Home = () => {
@@ -18,7 +18,9 @@ export const Home = () => {
             handleUnitChange={handleUnitChange}
           />
         </div>
-        <div className="column is-4">nearby cities</div>
+        <div className="column is-4">
+          <CitiesList />
+        </div>
       </div>
     </Layout>
   );

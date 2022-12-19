@@ -7,7 +7,7 @@ import { ISummaryData, Position, Units } from "../types";
 import { useGeolocation } from "./useGeolocation";
 
 export const useWeatherData = () => {
-  const { initialPosition } = useGeolocation();
+  const { position } = useGeolocation();
   const [currentPosition, setCurrentPosition] = useState<Position>();
   const [units, setUnits] = useState<Units>("metric");
 
@@ -50,8 +50,8 @@ export const useWeatherData = () => {
   );
 
   useEffect(() => {
-    setCurrentPosition(initialPosition);
-  }, [initialPosition]);
+    setCurrentPosition(position);
+  }, [position]);
 
   return {
     weatherData: parseSummaryData(weatherQuery.data),

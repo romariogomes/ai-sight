@@ -53,10 +53,8 @@ export const ForecastSection = ({
     [dayForecast]
   );
 
-  console.log(dayForecast);
-
   useEffect(() => {
-    setChartData(kpis.find((i) => i.name === selectedTab));
+    setChartData(kpis.find((item) => item.name === selectedTab));
   }, [selectedTab, kpis]);
 
   return (
@@ -69,7 +67,8 @@ export const ForecastSection = ({
             TabIndicatorProps={{
               sx: {
                 background:
-                  kpis.find((i) => i.name === selectedTab)?.color || undefined,
+                  kpis.find((item) => item.name === selectedTab)?.color ||
+                  undefined,
               },
             }}
           >
