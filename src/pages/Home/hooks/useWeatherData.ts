@@ -6,9 +6,13 @@ import { WeatherData } from "types";
 import { ISummaryData, Position, Units } from "../types";
 import { useGeolocation } from "./useGeolocation";
 
-export const useWeatherData = () => {
-  const { position } = useGeolocation();
-  const [currentPosition, setCurrentPosition] = useState<Position>();
+interface Props {
+  position: Position;
+}
+
+export const useWeatherData = ({ position }: Props) => {
+  // const { position } = useGeolocation();
+  // const [currentPosition, setCurrentPosition] = useState<Position>();
   const [units, setUnits] = useState<Units>("metric");
 
   const parseSummaryData = (data?: WeatherData): ISummaryData | undefined => {
@@ -35,29 +39,20 @@ export const useWeatherData = () => {
   };
 
   const weatherQuery = useQuery(
-    ["weatherData", currentPosition, units],
-    () =>
-      fetchWeatherData({
-        lat: currentPosition?.lat,
-        lon: currentPosition?.lng,
-        units,
-      }),
-    {
-      enabled:
-        currentPosition?.lat !== undefined &&
-        currentPosition?.lng !== undefined,
-    }
+    ["weatherData", position, units],
+    () => fetchWeatherData({ lat: position?.lat, lon: position?.lng, units }),
+    { enabled: position?.lat !== undefined && position?.lng !== undefined }
   );
 
-  useEffect(() => {
-    setCurrentPosition(position);
-  }, [position]);
+  // useEffect(() => {
+  //   setCurrentPosition(position);
+  // }, [position]);
 
   return {
     weatherData: parseSummaryData(weatherQuery.data),
     isLoading: weatherQuery.isFetching,
     error: weatherQuery.error as AxiosError,
-    currentPosition,
+    // currentPosition,
     units,
     fetchWeatherData,
     handleUnitChange: (unit: Units) => setUnits(unit),

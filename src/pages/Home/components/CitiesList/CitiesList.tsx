@@ -1,6 +1,11 @@
 import { Card } from "components";
+import { Position } from "pages/Home/types";
 
-export const CitiesList = () => {
+interface ICitiesListProps {
+  handleCityClick: (coords: Position) => void;
+}
+
+export const CitiesList = ({ handleCityClick }: ICitiesListProps) => {
   const cities = [
     { name: "Beijing", lat: 39.906217, lng: 116.3912757 },
     { name: "Berlin", lat: 52.5170365, lng: 13.3888599 },
@@ -21,8 +26,13 @@ export const CitiesList = () => {
     <Card>
       <h3 className="is-size-4 has-text-weight-semibold">Other cities</h3>
       <div className="mx-4">
-        {cities.map((city) => (
-          <div className="is-clickable my-2">{city.name}</div>
+        {cities.map(({ name, lat, lng }) => (
+          <div
+            className="is-clickable my-2"
+            onClick={() => handleCityClick({ lat, lng })}
+          >
+            {name}
+          </div>
         ))}
       </div>
     </Card>

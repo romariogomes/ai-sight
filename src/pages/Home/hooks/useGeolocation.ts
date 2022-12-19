@@ -14,6 +14,10 @@ export const useGeolocation = () => {
     }
   };
 
+  const handlePositionChange = (coords: Position) => {
+    setPosition(coords);
+  };
+
   useEffect(() => {
     getInitialCoordinates();
 
@@ -22,5 +26,6 @@ export const useGeolocation = () => {
 
   return {
     position,
+    handlePositionChange,
   };
 };
